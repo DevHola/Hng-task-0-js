@@ -2,11 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const app = express();
-// const response = {
-//     email: "connectola@yahoo.com",
-//     current_datetime: new Date().toISOString(),
-//     github_url: "https://github.com/DevHola/hng-level-0-task.git"
-// };
 
 app.use(cors({
     origin: '*',  
@@ -15,93 +10,84 @@ app.use(cors({
     maxAge: 12 * 60 * 60 
 }));
 
-// // task 1
-// app.get('/', (req, res) => {
-//     res.json(response);
-// });
+const digitSum = (num) => {
+    return Math.abs(num).toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+};
 
-// task 2
-const fun_Fact = async(num) => {
-    const response = await axios.get(`http://numbersapi.com/${num}/math?json`)
-    return response.data.text
-}
+const checkPerfect = (num) => {
+    let sum = 1;
+    for (let i = 2; i <= Math.sqrt(num); i++) {
+        if (num % i === 0) {
+            sum += i;
+            if (i !== num / i) sum += num / i; 
+        }
+    }
+    return sum === num && num !== 1;
+};
 
-app.get('/api/classify-number',async (req, res)=> {
-    const number = parseInt(req.query.number)
+
+const checkIsPrime = (num) => {
+    if (num <= 1) return false;
+    if (num === 2) return true; 
+    if (num % 2 === 0) return false;
+    for (let i = 3; i <= Math.sqrt(num); i += 2) {
+        if (num % i === 0) return false;
+    }
+    return true;
+};
+
+
+const checkArmstrong = (num) => {
+    const numStr = num.toString();
+    const numDigits = numStr.length; 
+    const sum = numStr.split('').reduce((acc, digit) => acc + Math.pow(parseInt(digit), numDigits), 0);
+    return sum === num;
+};
+
+const funFact = async (num) => {
+    try {
+        const response = await axios.get(`http://numbersapi.com/${num}/math?json`);
+        return response.data.text;
+    } catch (error) {
+        console.error('Error fetching fun fact:', error);
+        return 'No fun fact available.';
+    }
+};
+
+app.get('/api/classify-number', async (req, res) => {
+    const number = parseInt(req.query.number);
+    
     if (isNaN(number)) {
         return res.status(400).json({
             number: req.query.number,
             error: true
         });
     }
-    let data = {
-        number: number,
-        is_prime: checkIsPrime(number),
-        is_perfect: CheckPerfect(number),
-        properties: [],
+
+    const properties = [];
+
+    const isPrime = checkIsPrime(number);
+    const isPerfect = checkPerfect(number);
+    const isArmstrong = checkArmstrong(Math.abs(number));
+    const evenOrOdd = number % 2 === 0 ? 'even' : 'odd';
+    
+    if (isArmstrong) properties.push('armstrong');
+    if (isPrime) properties.push('prime');
+    if (isPerfect) properties.push('perfect');
+    
+    const fact = await funFact(number);
+
+    const response = {
+        number,
+        is_prime: isPrime,
+        is_perfect: isPerfect,
+        properties: [...properties, evenOrOdd],
         digit_sum: digitSum(number),
-        fun_fact: ''
-    }        
-        if(checkArmstrong(Math.abs(data.number))) data.properties.push("armstrong")
-        if(data.is_prime == undefined) data.is_prime = false
-        const evenorOdd = checkOdd(data.number)
-        data.properties.push(evenorOdd)
-        data.fun_fact = await fun_Fact(number)
-        return res.status(200).json(
-            data
-        )
-})
-const digitSum = (num) => {
-    return Math.abs(num).toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
-};
-const CheckPerfect = (num) => {
-    const figure = num
-    let temp = 0;
-    for (let i = 1; i <= figure / 2; i++){
-        if(figure % i === 0){
-            temp += i;
-        }
-    }
-    if(temp === figure && temp !== 0){
-        return true
-    } else {
-        return false
-    }
+        fun_fact: fact
+    };
 
-}
-const checkOdd = (num) => {
-        return num % 2 === 0 ? 'even' : 'odd';
-}
-const checkIsPrime = (num) => {
-    const figure = num
-    let isprime = true
-
-    if(figure === 1){
-        return false
-
-    } else if (figure > 1){
-
-        for(let i = 2; i <= num / 2; i++ ){
-            if(num % i == 0){
-
-                isprime = false
-                break;
-            }
-        }
-        return isprime
-    }
-}
-const checkArmstrong = (num) => {
-    const numStr = num.toString();
-    const numDigits = numStr.length; 
-    let sum = 0;
-
-    for (let digit of numStr) {
-        sum += Math.pow(parseInt(digit), numDigits);
-    }
-
-    return sum === num;
-};
+    return res.status(200).json(response);
+});
 
 const port = process.env.PORT || 8080;
 
