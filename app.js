@@ -2,11 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const app = express();
-const response = {
-    email: "connectola@yahoo.com",
-    current_datetime: new Date().toISOString(),
-    github_url: "https://github.com/DevHola/hng-level-0-task.git"
-};
+// const response = {
+//     email: "connectola@yahoo.com",
+//     current_datetime: new Date().toISOString(),
+//     github_url: "https://github.com/DevHola/hng-level-0-task.git"
+// };
 
 app.use(cors({
     origin: '*',  
@@ -15,10 +15,10 @@ app.use(cors({
     maxAge: 12 * 60 * 60 
 }));
 
-// task 1
-app.get('/', (req, res) => {
-    res.json(response);
-});
+// // task 1
+// app.get('/', (req, res) => {
+//     res.json(response);
+// });
 
 // task 2
 const fun_Fact = async(num) => {
