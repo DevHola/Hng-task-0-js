@@ -1,6 +1,6 @@
 # Webservice Project
 
-This project is a simple web service built using the Express framework in node. It provides an endpoint that returns a JSON response with an email, the current datetime, and a GitHub URL.
+This project is a simple web service built using the Express framework in Node.js. It provides an endpoint that returns a JSON response with a classification of a given number, including properties such as prime, perfect, Armstrong, and odd/even, along with a fun fact from the Numbers API.
 
 ## Running Locally
 
@@ -26,9 +26,9 @@ The application will start on `http://localhost:8080`.
 
 ## Endpoint
 
-### GET /
+### GET /api/classify-number
 
-**URL:** `http://localhost:8080/`
+**URL:** `http://localhost:8080/api/classify-number?number=28`
 
 **Method:** `GET`
 
@@ -37,9 +37,14 @@ The application will start on `http://localhost:8080`.
 **Response Example:**
 ```json
 {
-    "email": "connectola@yahoo.com",
-    "current_datetime": "2023-10-05T14:48:00Z",
-    "github_url": "github.com/devhola/hng-level-0-task"
+  "number": 28,
+  "is_prime": false,
+  "is_perfect": true,
+  "properties": [
+    "odd"
+  ],
+  "digit_sum": 10,
+  "fun_fact": "28 is the sum of the totient function for the first nine integers."
 }
 ```
 
@@ -49,12 +54,12 @@ To test the endpoint, you can use `curl` or any API testing tool like Postman.
 
 **Using curl:**
 ```sh
-curl http://localhost:8080/
+curl http://localhost:8080/api/classify-number?number=28
 ```
 
 **Using Postman:**
 1. Open Postman and create a new GET request.
-2. Set the URL to `http://localhost:8080/`.
+2. Set the URL to `http://localhost:8080/api/classify-number?number=28`.
 3. Send the request and you should see the JSON response.
 
 ## CORS Configuration
