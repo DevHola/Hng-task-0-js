@@ -43,6 +43,7 @@ app.get('/api/classify-number',async (req, res)=> {
         fun_fact: ''
     }        
         if(checkArmstrong(data.number)) data.properties.push("armstrong")
+        if(data.is_prime == undefined) data.is_prime = false
         const evenorOdd = checkOdd(data.number)
         data.properties.push(evenorOdd)
         data.fun_fact = await fun_Fact(number)
@@ -51,8 +52,8 @@ app.get('/api/classify-number',async (req, res)=> {
         )
 })
 const digitSum = (num) => {
-    return num.toString().split('').reduce((sum, digit) => sum + parseInt(digit),0)
-}
+    return Math.abs(num).toString().split('').reduce((sum, digit) => sum + parseInt(digit), 0);
+};
 const CheckPerfect = (num) => {
     const figure = num
     let temp = 0;
