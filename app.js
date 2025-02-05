@@ -28,15 +28,9 @@ const fun_Fact = async(num) => {
 
 app.get('/api/classify-number',async (req, res)=> {
     const number = parseInt(req.query.number)
-    if (number === undefined || number === "") {
-        return res.status(400).send({
-            number: null,
-            error: true
-        });
-      }
     if (isNaN(number)) {
         return res.status(400).json({
-            number: req.query.number,
+            number: (req.query.number === '')? null: req.query.number,
             error: true
         });
     }
