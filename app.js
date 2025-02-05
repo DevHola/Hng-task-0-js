@@ -75,11 +75,15 @@ const checkOdd = (num) => {
 const checkIsPrime = (num) => {
     const figure = num
     let isprime = true
+
     if(figure === 1){
         return false
+
     } else if (figure > 1){
+
         for(let i = 2; i <= num / 2; i++ ){
             if(num % i == 0){
+                
                 isprime = false
                 break;
             }
@@ -88,21 +92,16 @@ const checkIsPrime = (num) => {
     }
 }
 const checkArmstrong = (num) => {
-    const figure = num
-    let sum  = 0;
-    let temp = figure
-    while (temp > 0) {
-        let reminder = temp % 10;
-        sum += reminder * reminder * reminder
-        temp = parseInt(temp / 10)
-    }
-    if(sum == figure){
-        return true
-    } else {
-        return false
+    const numStr = num.toString();
+    const numDigits = numStr.length; 
+    let sum = 0;
+
+    for (let digit of numStr) {
+        sum += Math.pow(parseInt(digit), numDigits);
     }
 
-}
+    return sum === num;
+};
 
 const port = process.env.PORT || 8080;
 
