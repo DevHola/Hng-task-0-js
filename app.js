@@ -42,7 +42,7 @@ app.get('/api/classify-number',async (req, res)=> {
         digit_sum: digitSum(number),
         fun_fact: ''
     }        
-        if(checkArmstrong(data.number)) data.properties.push("armstrong")
+        if(checkArmstrong(Math.abs(data.number))) data.properties.push("armstrong")
         if(data.is_prime == undefined) data.is_prime = false
         const evenorOdd = checkOdd(data.number)
         data.properties.push(evenorOdd)
@@ -83,7 +83,7 @@ const checkIsPrime = (num) => {
 
         for(let i = 2; i <= num / 2; i++ ){
             if(num % i == 0){
-                
+
                 isprime = false
                 break;
             }
