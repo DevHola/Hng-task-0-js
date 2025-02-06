@@ -27,13 +27,14 @@ const fun_Fact = async(num) => {
 }
 
 app.get('/api/classify-number',async (req, res)=> {
-    const number = parseInt(req.query.number)
+    let number = req.query.number
     if (isNaN(number)) {
         return res.status(400).json({
-            number: req.query.number,
-            error: true
+            error: true,
+            number: req.query.number
         });
     }
+    number = parseInt(number)
     let data = {
         number: number,
         is_prime: checkIsPrime(number),
