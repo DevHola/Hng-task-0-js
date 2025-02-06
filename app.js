@@ -28,7 +28,8 @@ const fun_Fact = async(num) => {
 
 app.get('/api/classify-number',async (req, res)=> {
     let number = req.query.number
-    if (isNaN(number)) {
+    console.log(number)
+    if (!number || isNaN(number)) {
         return res.status(400).json({
             error: true,
             number: req.query.number
