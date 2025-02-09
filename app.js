@@ -2,11 +2,11 @@ const express = require('express');
 const cors = require('cors');
 const axios = require('axios');
 const app = express();
-// const response = {
-//     email: "connectola@yahoo.com",
-//     current_datetime: new Date().toISOString(),
-//     github_url: "https://github.com/DevHola/hng-level-0-task.git"
-// };
+const response = {
+    email: "connectola@yahoo.com",
+    current_datetime: new Date().toISOString(),
+    github_url: "https://github.com/DevHola/hng-level-0-task.git"
+};
 
 app.use(cors({
     origin: '*',  
@@ -16,9 +16,9 @@ app.use(cors({
 }));
 
 // // task 1
-// app.get('/', (req, res) => {
-//     res.json(response);
-// });
+app.get('/', (req, res) => {
+    res.json(response);
+});
 
 // task 2
 const fun_Fact = async(num) => {
@@ -28,7 +28,6 @@ const fun_Fact = async(num) => {
 
 app.get('/api/classify-number',async (req, res)=> {
     let number = req.query.number
-    console.log(number)
     if (!number || isNaN(number)) {
         return res.status(400).json({
             error: true,
